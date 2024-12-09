@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pelucas
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./base_datos/init-scripts:/docker-entrypoint-initdb.d
+  categoria:
+    build:
+      context: ./services/
+    ports:
+      - '5001:3000'
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=pelucas
+    depends_on:
+      - db
